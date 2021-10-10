@@ -188,10 +188,26 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 								System.out.println(smartPhone);
 
 					}
-//						} else if (opcion == 4) {
+						} else if (opcion == 4) {
+							System.out.println("Introduzca el id del Smartphone que desea borrar");
+							Long id = scanner.nextLong();
+							boolean exists = repository.existsById(id);
+
+							if (exists) {
+								repository.deleteById(id);
+								System.out.println("Registro de Smartphone borrado");
+							} else {
+								System.out.println("No existe el SmartPhone solicitado");}
 
 
-					//				} else if (opcion == 5) {
+								} else if (opcion == 5) {
+							System.out.println("Esto borrará todos los registros de los Smartphones, ¿está seguro? (true o false)");
+							boolean confirm = scanner.nextBoolean();
+
+							if (!confirm) continue;
+
+							repository.deleteAll();
+							System.out.println("Registros borrados correctamente");
 
 
 					//				} else if (opcion == 7) {
