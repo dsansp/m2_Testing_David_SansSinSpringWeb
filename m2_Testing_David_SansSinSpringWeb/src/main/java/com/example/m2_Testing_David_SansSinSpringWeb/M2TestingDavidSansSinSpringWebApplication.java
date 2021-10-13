@@ -18,7 +18,7 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 	SmartPhonesRepository repository;
 	public static void main(String[] args) {
 		SpringApplication.run(M2TestingDavidSansSinSpringWebApplication.class, args);
-		System.out.println("Hola mundo");
+
 	}
 	public void menuShow() {
 		System.out.println("Bienvenidos a la APP: ");
@@ -39,6 +39,8 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 		System.out.println("5- Buscar por Megapixels y por memoria Ram: ");
 		System.out.println("6- Buscar por el Modelo: ");
 		System.out.println("7- Buscar hasta un precio determinado: ");
+		System.out.println("8- Consultar la cantidad de registros: ");
+		System.out.println("9- Verificar si existe una Id: ");
 	}
 
 	@Override
@@ -69,51 +71,50 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 					Double precio = scanner.nextDouble();
 					scanner.nextLine();
 					System.out.println("¿El dispositivo dispone de Huella inteligente?");
-					Boolean huella= scanner.nextBoolean();
+					Boolean huella = scanner.nextBoolean();
 
 					// 2. Crear el objeto
-					SmartPhone telefono = new SmartPhone(null, manufacturer, model, precio, mPixel, huella,ram);
+					SmartPhone telefono = new SmartPhone(null, manufacturer, model, precio, mPixel, huella, ram);
 
 					// 3. Guardar el objeto  en base de datos
 					repository.save(telefono);
 					System.out.println("Smartphone creado correctamente");
 
-				}else if (opcion == 2) {
+				} else if (opcion == 2) {
 					System.out.println("Por favor, introduzca el id del Smartphone que desea modificar");
 					Long id = scanner.nextLong();
 					scanner.nextLine();
 					Optional<SmartPhone> smartPhonesOptional = repository.findById(id);
-					if (smartPhonesOptional.isEmpty()){
+					if (smartPhonesOptional.isEmpty()) {
 						System.out.println("No existe el Smartphone solicitado");
 						continue;
 					}
-					SmartPhone smartp=smartPhonesOptional.get();
-					System.out.println("Introduce el fabricante (Actual "+ smartp.getManufacturer()+ ") ");
+					SmartPhone smartp = smartPhonesOptional.get();
+					System.out.println("Introduce el fabricante (Actual " + smartp.getManufacturer() + ") ");
 					String manufacturer = scanner.nextLine();
 					smartp.setManufacturer(manufacturer);
-					System.out.println("Introduce el modelo(Actual "+ smartp.getModel()+ ") ");
+					System.out.println("Introduce el modelo(Actual " + smartp.getModel() + ") ");
 					String model = scanner.nextLine();
 					smartp.setModel(model);
-					System.out.println("Introduce la cantidad de Megapixels (Actual "+ smartp.getPixel()+ ") ");
+					System.out.println("Introduce la cantidad de Megapixels (Actual " + smartp.getPixel() + ") ");
 					Integer mPixel = scanner.nextInt();
 					scanner.nextLine();
 					smartp.setPixel(mPixel);
-					System.out.println("Introduce la cantidad de memoria RAM (Actual "+ smartp.getRam()+") ");
+					System.out.println("Introduce la cantidad de memoria RAM (Actual " + smartp.getRam() + ") ");
 					Integer ram = scanner.nextInt();
 					scanner.nextLine();
 					smartp.setRam(ram);
-					System.out.println("Introduce el precio (Actual "+ smartp.getPrice()+" ) ");
+					System.out.println("Introduce el precio (Actual " + smartp.getPrice() + " ) ");
 					Double precio = scanner.nextDouble();
 					scanner.nextLine();
 					smartp.setPrice(precio);
-					System.out.println("¿El dispositivo dispone de Huella inteligente? (Actual "+ smartp.getHuella() +") ");
-					Boolean huella= scanner.nextBoolean();
+					System.out.println("¿El dispositivo dispone de Huella inteligente? (Actual " + smartp.getHuella() + ") ");
+					Boolean huella = scanner.nextBoolean();
 					smartp.setHuella(huella);
 					repository.save(smartp);
 					System.out.println(" Smartphone actualizado correctamente!");
 
-				}
-				else if (opcion == 3) {
+				} else if (opcion == 3) {
 					System.out.println("ha elegido la opción buscar: ");
 
 					while (true) {
@@ -125,8 +126,7 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 						if (subOpcion == 0) {
 							System.out.println("volver al menu principal");
 							break;
-						}
-						else if (subOpcion == 1) {
+						} else if (subOpcion == 1) {
 							System.out.println("Mostrar todos: ");
 							List<SmartPhone> telefono = repository.findAll();
 							if (telefono.isEmpty()) {
@@ -139,6 +139,7 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 						} else if (subOpcion == 2) {
 							System.out.println("Introduzca la Id a buscar: ");
 							Long id = scanner.nextLong();
+							scanner.nextLine();
 							Optional<SmartPhone> smartPhonesOptional = repository.findById(id);
 							if (smartPhonesOptional.isPresent()) {
 								SmartPhone phones = smartPhonesOptional.get();
@@ -186,38 +187,51 @@ public class M2TestingDavidSansSinSpringWebApplication implements CommandLineRun
 							List<SmartPhone> phones = repository.findByPriceLessThan(preciotope);
 							for (SmartPhone smartPhone : phones) {
 								System.out.println(smartPhone);
-
-					}
-						} else if (opcion == 4) {
-							System.out.println("Introduzca el id del Smartphone que desea borrar");
-							Long id = scanner.nextLong();
-							boolean exists = repository.existsById(id);
-
-							if (exists) {
-								repository.deleteById(id);
-								System.out.println("Registro de Smartphone borrado");
-							} else {
-								System.out.println("No existe el SmartPhone solicitado");}
-
-
-								} else if (opcion == 5) {
-							System.out.println("Esto borrará todos los registros de los Smartphones, ¿está seguro? (true o false)");
-							boolean confirm = scanner.nextBoolean();
-
-							if (!confirm) continue;
-
-							repository.deleteAll();
-							System.out.println("Registros borrados correctamente");
-
-
-					//				} else if (opcion == 7) {
-
-					//					} else if (opcion == 8) {
-
-				}
-
-
 							}
+						} else if (subOpcion == 8) {
+							Long numero = repository.count();
+							System.out.println("Ha escogido la opción consultar el numero de registros " + numero);
+						}else if (subOpcion == 9){
+							System.out.println("Introduzca la Id a comprobar: ");
+							Long id = scanner.nextLong();
+							scanner.nextLine();
+							Optional<SmartPhone> smartPhonesOptional = repository.findById(id);
+							if (smartPhonesOptional.isPresent()) {
+								System.out.println("El equipo exite en la base de datos");		}
+						 else {
+							System.out.println("No hay Smartphones con esta Id.");}
+
+					}else {
+							System.out.println("Opción no disponible");
+						}
+					}
+				} else if (opcion == 4) {
+					System.out.println("Introduzca el id del Smartphone que desea borrar");
+					Long id = scanner.nextLong();
+					boolean exists = repository.existsById(id);
+
+					if (exists) {
+						repository.deleteById(id);
+						System.out.println("Registro de Smartphone borrado");
+					} else {
+						System.out.println("No existe el SmartPhone solicitado");
+					}
+
+
+				} else if (opcion == 5) {
+					System.out.println("Esto borrará todos los registros de los Smartphones, ¿está seguro? (true o false)");
+					boolean confirm = scanner.nextBoolean();
+
+					if (!confirm) continue;
+
+					repository.deleteAll();
+					System.out.println("Registros borrados correctamente");
+
+
+								} else  {
+					System.out.println("Opción no disponible");
+
+
 
 					}
 			} catch (Exception e) {
